@@ -1,6 +1,6 @@
 import pandas as pd 
 import numpy as np
-import torch 
+
 
 data = pd.read_csv('/Users/mohitsimic/Desktop/project1-student-habits/data/student_habits_performance.csv')
 X, y = data.drop(columns=['exam_score', 'student_id']), data['exam_score']
@@ -67,4 +67,13 @@ feature_names = model.named_steps['columntransformer'].get_feature_names_out()
 import pandas as pd
 
 importance_df = pd.Series(importances, index = feature_names).sort_values(ascending=False)
-# print(importance_df)
+
+from sklearn.dummy import DummyRegressor
+
+model_2 = DummyRegressor()
+model_2.fit(train_X,train_y)
+predict = model_2.predict(test_X)
+print('----Dummy Regressor Results----')
+print(f'RMSE : {root_mean_squared_error(test_y,predict)}')
+print(f'r2 : {r2_score(test_y, predict)}')
+
