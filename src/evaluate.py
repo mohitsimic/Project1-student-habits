@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import torch 
 
-data = pd.read_csv('/Users/mohitsimic/Desktop/ machine learning /Week 5 /student_habits_performance.csv')
+data = pd.read_csv('/Users/mohitsimic/Desktop/project1-student-habits/data/student_habits_performance.csv')
 X, y = data.drop(columns=['exam_score', 'student_id']), data['exam_score']
 
 from sklearn.model_selection import (
