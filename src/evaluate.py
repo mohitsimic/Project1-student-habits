@@ -14,10 +14,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
 
-
-random = np.random.RandomState(0)
 train_X, test_X , train_y, test_y = train_test_split(
-    X,y,random_state=random, shuffle= True, test_size= .3
+    X,y,random_state=42, shuffle= True, test_size= .3
 )
 categorical_head = X.select_dtypes(include = ['str']).columns.tolist()
 
@@ -50,7 +48,7 @@ from sklearn.metrics import (mean_absolute_error,mean_squared_error,
 
 ##----I made a pipeline so that the test_X can be cleaned to before predictions.
 
-model = make_pipeline(transformer,RandomForestRegressor())
+model = make_pipeline(transformer,RandomForestRegressor(random_state=42))
 model.fit(train_X,train_y)
 
 predictions = (model.predict(test_X))
