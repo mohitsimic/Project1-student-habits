@@ -11,7 +11,8 @@ python src/evaluate.py
 ## Results
 - RMSE: ~6.4 points (0-100 scale)
 - R²: ~0.86
-- Baseline (predict mean) RMSE: [fill in once you run the dummy comparison]
+- Baseline (predict mean) RMSE: 17.2636001209497
+-                         R² : 0.00
 
 ## Key findings
 - `study_hours_per_day` dominates feature importance (~69%)
