@@ -56,9 +56,10 @@ kf = KFold(n_splits= 7, shuffle=True, random_state=42)
 scoring = ['neg_mean_squared_error', 'neg_mean_absolute_error',
            'neg_max_error','neg_root_mean_squared_error','r2']
 scores = cross_validate(model, train_X, train_y, cv = kf,scoring= scoring)
-errors = predictions- test_y
-# print(errors.describe())
-
+print('----For the RandomForest----')
+print(f'RMSE : {-scores['test_neg_root_mean_squared_error'].mean()}')
+print(f'r2 : {scores['test_r2'].mean()}')
+print('\n')
 importances = model.named_steps['randomforestregressor'].feature_importances_
 feature_names = model.named_steps['columntransformer'].get_feature_names_out()
 
@@ -66,12 +67,45 @@ import pandas as pd
 
 importance_df = pd.Series(importances, index = feature_names).sort_values(ascending=False)
 
-from sklearn.dummy import DummyRegressor
+##-- DummyRegressor Results ----
 
+from sklearn.dummy import DummyRegressor
 model_2 = DummyRegressor()
 model_2.fit(train_X,train_y)
 predict = model_2.predict(test_X)
 print('----Dummy Regressor Results----')
 print(f'RMSE : {root_mean_squared_error(test_y,predict)}')
 print(f'r2 : {r2_score(test_y, predict)}')
+print('\n')
+from sklearn.ensemble import GradientBoostingRegressor
 
+import numpy as np
+
+
+##---GradientBoosting Results ------
+
+grad_model = make_pipeline(transformer,GradientBoostingRegressor(
+    random_state= 42
+))
+kf_grad = KFold(n_splits= 7, shuffle=True, random_state=42)
+scoring = ['neg_mean_squared_error', 'neg_mean_absolute_error',
+           'neg_max_error','neg_root_mean_squared_error','r2']
+scores_grad = cross_validate(grad_model, train_X, train_y, cv = kf,scoring= scoring)
+print('----for Gradiet_Boosting----')
+print(f'RMSE: {-scores_grad['test_neg_root_mean_squared_error'].mean()}')
+print(f'r2 : {scores_grad['test_r2'].mean()}')
+
+print('\n')
+
+##---Linear Model results 
+
+from sklearn.linear_model import LinearRegression
+lin_model = make_pipeline(transformer , LinearRegression())
+lin_model.fit(train_X,train_y)
+kf_linear = KFold(n_splits= 7, shuffle=True, random_state=42)
+scoring = ['neg_mean_squared_error', 'neg_mean_absolute_error',
+           'neg_max_error','neg_root_mean_squared_error','r2']
+scores_linear = cross_validate(lin_model, train_X, train_y, cv = kf,scoring= scoring)
+print('----For Linear Regression----')
+print(f'RMSE : {-scores_linear['test_neg_root_mean_squared_error'].mean()}')
+print(f'r2 : {scores_linear['test_r2'].mean()}')
